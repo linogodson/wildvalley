@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=4 uid="uid://cuxsvv6ytvi5k"]
+[gd_scene load_steps=30 format=4 uid="uid://cuxsvv6ytvi5k"]
 
 [ext_resource type="PackedScene" uid="uid://j7euwlris3lq" path="res://scenes/player.tscn" id="1_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://d3fgs1ou1fi07" path="res://scenes/shop.tscn" id="2_kvpfn"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://cvmguw2sdhvj5" path="res://arts/Layer_0009_2.png" id="7_gee14"]
 [ext_resource type="Texture2D" uid="uid://djktthq222f1t" path="res://arts/Layer_0006_4.png" id="8_0tnpc"]
 [ext_resource type="Texture2D" uid="uid://dtp783dwbqxm4" path="res://arts/skull knight.png" id="9_kvpfn"]
+[ext_resource type="PackedScene" uid="uid://yx7ot5x8mp3c" path="res://scenes/enemy.tscn" id="13_kvuet"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lbhrr"]
 texture = ExtResource("2_lnu2h")
@@ -4544,6 +4545,15 @@ position = Vector2(1584, 67)
 [node name="coins18" parent="COINS" instance=ExtResource("6_p57ef")]
 position = Vector2(1815, 129)
 
+[node name="coins31" parent="COINS" instance=ExtResource("6_p57ef")]
+position = Vector2(1826, -10)
+
+[node name="coins32" parent="COINS" instance=ExtResource("6_p57ef")]
+position = Vector2(1848, -10)
+
+[node name="coins33" parent="COINS" instance=ExtResource("6_p57ef")]
+position = Vector2(1870, -10)
+
 [node name="coins19" parent="COINS" instance=ExtResource("6_p57ef")]
 position = Vector2(1895, 103)
 
@@ -4580,6 +4590,12 @@ position = Vector2(2909, 98)
 [node name="coins30" parent="COINS" instance=ExtResource("6_p57ef")]
 position = Vector2(2896, 122)
 
+[node name="coins34" parent="COINS" instance=ExtResource("6_p57ef")]
+position = Vector2(3057, 118)
+
+[node name="coins35" parent="COINS" instance=ExtResource("6_p57ef")]
+position = Vector2(3216, 162)
+
 [node name="coins2" parent="COINS" instance=ExtResource("6_p57ef")]
 position = Vector2(304, 0)
 
@@ -4613,6 +4629,7 @@ process_mode = 3
 position = Vector2(-141, -45)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(0, -1)
 zoom = Vector2(2.89, 2.89)
 limit_smoothed = true
 position_smoothing_enabled = true
@@ -4622,5 +4639,8 @@ position = Vector2(-2, 0)
 color = Color(1, 0.870588, 0.4, 1)
 energy = 2.0
 texture = SubResource("GradientTexture2D_0tnpc")
+
+[node name="enemy" parent="." instance=ExtResource("13_kvuet")]
+position = Vector2(-67, -17)
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]

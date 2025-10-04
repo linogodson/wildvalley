@@ -4,9 +4,9 @@ extends CanvasLayer
 @onready var name_label = $Panel/Control/Name
 @onready var des_label = $Panel/Control/Des
 @onready var buy_button = $Panel/Control/Buy
-@onready var icon = $Panel/Control/Icon   # TextureRect
+@onready var icon = $Panel/Control/AnimatedSprite2D
 
-var curr_item: int = 0
+var curr_item = 0
 
 func _ready() -> void:
 	panel.visible = false
@@ -25,16 +25,15 @@ func _on_close_pressed() -> void:
 func update_display() -> void:
 	if curr_item in Global.items:
 		var item = Global.items[curr_item]
-		
 		name_label.text = item["Name"]
 		des_label.text = "%s\n(Cost: %d)" % [item["Des"], item["Cost"]]
 		buy_button.text = "Purchase (%d coins)" % item["Cost"]
-
-		# Set fruit picture
 		if item.has("Icon"):
-			icon.texture = item["Icon"]
+			icon.frames = item["Icon"]
+			icon.play()
 		else:
-			icon.texture = null
+			icon.frames = null
+			icon.stop()
 
 func _on_next_pressed() -> void:
 	curr_item = (curr_item + 1) % Global.items.size()
@@ -47,11 +46,8 @@ func _on_prev_pressed() -> void:
 func _on_buy_pressed() -> void:
 	if curr_item in Global.items:
 		var item = Global.items[curr_item]
-
 		if Global.gold >= item["Cost"]:
 			Global.gold -= item["Cost"]
-			print("Bought %s, gold left: %d" % [item["Name"], Global.gold])
-
 			var found = false
 			for key in Global.inventory.keys():
 				if Global.inventory[key]["Name"] == item["Name"]:
@@ -66,5 +62,8 @@ func _on_buy_pressed() -> void:
 					"Cost": item["Cost"],
 					"Count": 1
 				}
+			var player = get_tree().get_first_node_in_group("Player")
+			if player:
+				player.add_heart()
 		else:
 			print("Not enough coins to buy %s!" % item["Name"])

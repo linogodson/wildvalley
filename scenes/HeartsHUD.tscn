@@ -1,0 +1,72 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvb40amgyepkr"]
+
+[ext_resource type="Script" uid="uid://b655fpquesnp6" path="res://scripts/HeartHUD.gd" id="1_hig31"]
+[ext_resource type="Texture2D" uid="uid://dvgc8h8nlbupq" path="res://arts/Heart_pixelart_(transparent_background).svg.png" id="2_qni83"]
+
+[node name="HeartsHUD" type="Node2D"]
+script = ExtResource("1_hig31")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 100
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0.01, 0.001)
+layout_mode = 2
+texture = ExtResource("2_qni83")
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0.01, 0.001)
+layout_mode = 2
+texture = ExtResource("2_qni83")
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0.01, 0.001)
+layout_mode = 2
+texture = ExtResource("2_qni83")
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0.01, 0.001)
+layout_mode = 2
+texture = ExtResource("2_qni83")
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0.01, 0.001)
+layout_mode = 2
+texture = ExtResource("2_qni83")
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0.01, 0.001)
+layout_mode = 2
+texture = ExtResource("2_qni83")
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0.01, 0.001)
+layout_mode = 2
+texture = ExtResource("2_qni83")
+stretch_mode = 5
+
+[node name="TextureRect8" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0.01, 0.001)
+layout_mode = 2
+texture = ExtResource("2_qni83")
+stretch_mode = 5
+
+[node name="TextureRect9" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0.01, 0.001)
+layout_mode = 2
+texture = ExtResource("2_qni83")
+stretch_mode = 5
+
+[node name="TextureRect10" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0.01, 0.001)
+layout_mode = 2
+texture = ExtResource("2_qni83")
+stretch_mode = 5
