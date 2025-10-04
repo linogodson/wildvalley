@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bqqtxqtgx8fla"]
+
+[ext_resource type="Script" uid="uid://v5pyq3dgpqm" path="res://scripts/area_2d.gd" id="1_nhxoo"]
+[ext_resource type="Texture2D" uid="uid://be2qstphid0j1" path="res://arts/neutral_circle.png" id="2_5ieuq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pa2l1"]
+radius = 75.2396
+
+[node name="magnet" type="Area2D"]
+script = ExtResource("1_nhxoo")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(134, -8)
+texture = ExtResource("2_5ieuq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(135, -8)
+shape = SubResource("CircleShape2D_pa2l1")

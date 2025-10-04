@@ -1,7 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://j7euwlris3lq"]
+[gd_scene load_steps=25 format=3 uid="uid://j7euwlris3lq"]
 
 [ext_resource type="Script" uid="uid://lnklilp14tl0" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://b0hpoogxa3m6x" path="res://arts/AnimationSheet_Character.png" id="2_qhqgy"]
+[ext_resource type="PackedScene" uid="uid://b3skc31rhbxbm" path="res://scenes/killzone.tscn" id="3_qhqgy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dqkch"]
 atlas = ExtResource("2_qhqgy")
@@ -151,7 +152,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
-"speed": 10.0
+"speed": 12.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g2els"]
@@ -163,9 +164,11 @@ script = ExtResource("1_g2els")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_4ni07")
-animation = &"idle"
-frame_progress = 0.779961
+animation = &"jump"
+frame_progress = 0.627367
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)
 shape = SubResource("CapsuleShape2D_g2els")
+
+[node name="killzone" parent="." instance=ExtResource("3_qhqgy")]

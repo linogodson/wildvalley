@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c6mimyxyllnuv"]
+[gd_scene load_steps=20 format=3 uid="uid://c6mimyxyllnuv"]
 
 [ext_resource type="Texture2D" uid="uid://c6yfqq8qp6o0q" path="res://arts/coin.png" id="1_0wmmx"]
 [ext_resource type="Script" uid="uid://crc31fwp72swp" path="res://scripts/coins.gd" id="1_o4aag"]
@@ -95,19 +95,34 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="GDScript" id="GDScript_o4aag"]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_owglm"]
 radius = 5.0
 
+[sub_resource type="Gradient" id="Gradient_o4aag"]
+offsets = PackedFloat32Array(0, 0.305195, 0.519481)
+colors = PackedColorArray(1, 1, 1, 1, 0.25, 0.25, 0.25, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fxnh4"]
+gradient = SubResource("Gradient_o4aag")
+fill = 1
+fill_from = Vector2(0.5, 0.513761)
+
 [node name="coins" type="Area2D"]
-collision_mask = 2
 script = ExtResource("1_o4aag")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_qqwss")
-frame = 6
-frame_progress = 0.725579
+autoplay = "default"
+frame_progress = 0.846054
+script = SubResource("GDScript_o4aag")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_owglm")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.937608, 0.912986, 1.54018e-06, 1)
+texture = SubResource("GradientTexture2D_fxnh4")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
