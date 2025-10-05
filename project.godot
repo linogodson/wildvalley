@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Wildvalley"
-run/main_scene="uid://j7euwlris3lq"
+run/main_scene="uid://cuxsvv6ytvi5k"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 

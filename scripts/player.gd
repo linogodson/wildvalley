@@ -1,106 +1,86 @@
 extends CharacterBody2D
 
-@export var speed: float = 150
-@export var jump_force: float = 350
-@export var gravity: float = 900
-@export var max_hearts: int = 10
-@export var respawn_time: float = 2.0
-
-@onready var anim: AnimatedSprite2D = $AnimatedSprite2D
-@onready var heart_ui = get_tree().get_first_node_in_group("HeartsUI")
-
-var shop
-var hearts: int = 3
+@export var speed: float = 150.0
+@export var jump_force: float = 350.0
+@export var gravity: float = 900.0
+@export var respawn_time: float = 1.0
 var is_dead: bool = false
 var can_move: bool = true
 var invincible: bool = false
 
-func _ready() -> void:
+@onready var anim: AnimatedSprite2D = $AnimatedSprite2D
+@onready var health_manager = get_tree().get_first_node_in_group("HealthManager")
+@onready var stx_jump = $stx_jump
+
+func _ready():
 	add_to_group("Player")
-	shop = get_tree().get_first_node_in_group("Shop")
-	update_heart_ui()
 
 func _physics_process(delta: float) -> void:
-	if is_dead or not can_move:
+	if is_dead:
 		return
-	
-	if shop and shop.is_open():
-		velocity.x = 0
-		anim.play("idle")
-		return
-	
+
 	if not is_on_floor():
 		velocity.y += gravity * delta
-	
-	velocity.x = 0
-	if Input.is_action_pressed("move_left"):
-		velocity.x = -speed
-	elif Input.is_action_pressed("move_right"):
-		velocity.x = speed
-	
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = -jump_force
-	
-	move_and_slide()
-	update_animation()
-	
-	if Input.is_action_just_pressed("interact") and shop:
-		shop.toggle()
 
-func update_animation() -> void:
+	var direction := Input.get_axis("ui_left", "ui_right")
+	if can_move:
+		velocity.x = direction * speed
+	else:
+		velocity.x = 0
+
+	if Input.is_action_just_pressed("ui_accept") and is_on_floor() and can_move:
+		velocity.y = -jump_force
+
+	move_and_slide()
+
+	if direction != 0:
+		anim.flip_h = direction < 0
+
 	if not is_on_floor():
 		anim.play("jump")
-		anim.flip_h = velocity.x < 0
-	elif abs(velocity.x) > 0:
+	elif direction != 0:
 		anim.play("run")
-		anim.flip_h = velocity.x < 0
+		stx_jump.play()
 	else:
 		anim.play("idle")
 
+
 func add_coin() -> void:
-	Global.gold += 1
-
-func spend_coins(amount: int) -> bool:
-	if Global.gold >= amount:
-		Global.gold -= amount
-		return true
-	return false
-
+	var global = get_node_or_null("/root/Global")
+	if global:
+		global.gold += 1
+		%coin_hehe.play()
 func add_heart() -> void:
-	if hearts < max_hearts:
-		hearts += 1
-		update_heart_ui(true)
+	if health_manager:
+		health_manager.increase_health(1)
 
-func heal(amount: int = 1) -> void:
-	if is_dead:
-		return
-	hearts = clamp(hearts + amount, 0, max_hearts)
-	update_heart_ui(true)
-
-func take_damage() -> void:
+func take_damage(source: Node2D = null) -> void:
 	if is_dead or invincible:
 		return
-	
-	if hearts > 0:
-		hearts -= 1
-		update_heart_ui()
+
+	if health_manager:
+		health_manager.decrease_health(1)
 		flash_red()
 		start_invincibility(1.0)
-	
-	if hearts <= 0:
-		die()
+
+		if source:
+			var knock_dir = (global_position - source.global_position).normalized()
+			velocity = knock_dir * 220 + Vector2(0, -140)
+
+		if health_manager.current_health <= 0:
+			die()
 
 func start_invincibility(duration: float) -> void:
 	invincible = true
 	var blink_timer = get_tree().create_timer(duration)
 	var blink_tween = get_tree().create_tween().set_loops(6)
-	blink_tween.tween_property(anim, "modulate", Color(1, 1, 1, 0.4), 0.1)
+	blink_tween.tween_property(anim, "modulate", Color(1, 1, 1, 0.35), 0.1)
 	blink_tween.tween_property(anim, "modulate", Color(1, 1, 1, 1.0), 0.1)
 	await blink_timer.timeout
 	invincible = false
 	anim.modulate = Color(1, 1, 1, 1)
 
-func flash_red():
+func flash_red() -> void:
 	var tween = get_tree().create_tween()
 	anim.modulate = Color(1, 0.3, 0.3)
 	tween.tween_property(anim, "modulate", Color(1, 1, 1), 0.3)
@@ -111,34 +91,30 @@ func die() -> void:
 	is_dead = true
 	can_move = false
 	velocity = Vector2.ZERO
-	if "dead" in anim.sprite_frames.get_animation_names():
 
+	if anim.sprite_frames and anim.sprite_frames.has_animation("death"):
 		anim.play("death")
 		await anim.animation_finished
 	else:
 		await get_tree().create_timer(1.0).timeout
-	
+
 	await get_tree().create_timer(respawn_time).timeout
 	respawn()
 
-func respawn():
+func respawn() -> void:
 	var current_scene = get_tree().current_scene
-	var new_scene = load(current_scene.scene_file_path).instantiate()
+	if current_scene == null:
+		if get_tree().root.get_child_count() > 0:
+			current_scene = get_tree().root.get_child(0)
+		else:
+			push_error("Respawn failed: no current scene or root child found.")
+			return
+
+	var path = current_scene.scene_file_path
+	if path == "":
+		push_error("Respawn failed: current scene has no file path.")
+		return
+
+	var new_scene = load(path).instantiate()
 	get_tree().root.add_child(new_scene)
-	get_tree().current_scene.queue_free()
-
-func update_heart_ui(pop_new := false) -> void:
-	if heart_ui:
-		for i in range(heart_ui.get_child_count()):
-			var heart = heart_ui.get_child(i)
-			heart.visible = i < hearts
-			if pop_new and i == hearts - 1:
-				heart.scale = Vector2(0.2, 0.2)
-				var tween = get_tree().create_tween()
-				tween.tween_property(heart, "scale", Vector2(1, 1), 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-
-
-func _on_hurtbox_body_entered(body: Node2D) -> void:
-	if body.is_in_group("Enemy"):
-		print("Enemy entered ", body.damage_amount)
-		HealthManagert.decrease_health(1)
+	current_scene.queue_free()

@@ -1,27 +1,26 @@
-[gd_scene load_steps=11 format=3 uid="uid://yx7ot5x8mp3c"]
+[gd_scene load_steps=10 format=3 uid="uid://yx7ot5x8mp3c"]
 
 [ext_resource type="Script" uid="uid://dc8iskqmr1vi3" path="res://scripts/enemy.gd" id="1_4ra3w"]
-[ext_resource type="Texture2D" uid="uid://gxg2m6s0sf8y" path="res://arts/Rat_Full.png" id="2_md0e3"]
+[ext_resource type="Texture2D" uid="uid://bxyk6kvj1cej6" path="res://arts/FLYING.png" id="2_md0e3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ipns3"]
+size = Vector2(23.5, 15.5)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4ra3w"]
 atlas = ExtResource("2_md0e3")
-region = Rect2(64, 0, 64, 64)
+region = Rect2(0, 0, 81, 71)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5uy6h"]
 atlas = ExtResource("2_md0e3")
-region = Rect2(128, 0, 64, 64)
+region = Rect2(81, 0, 81, 71)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c4w8v"]
 atlas = ExtResource("2_md0e3")
-region = Rect2(192, 0, 64, 64)
+region = Rect2(162, 0, 81, 71)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xwavj"]
 atlas = ExtResource("2_md0e3")
-region = Rect2(256, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_nenq2"]
-atlas = ExtResource("2_md0e3")
-region = Rect2(320, 0, 64, 64)
+region = Rect2(243, 0, 81, 71)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_md484"]
 animations = [{
@@ -37,40 +36,34 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xwavj")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_nenq2")
 }],
 "loop": true,
 "name": &"idle",
 "speed": 8.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ipns3"]
-size = Vector2(9, 5)
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_md0e3"]
-radius = 2.0
-height = 4.0
+radius = 13.0
+height = 32.0
 
 [node name="CharacterBody2D" type="CharacterBody2D" groups=["Enemy"]]
-collision_layer = 4
-collision_mask = 2
+collision_layer = 2
 script = ExtResource("1_4ra3w")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-74, -15)
+shape = SubResource("RectangleShape2D_ipns3")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-65, -22)
 sprite_frames = SubResource("SpriteFrames_md484")
 animation = &"idle"
-frame_progress = 0.69247
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, 13)
-shape = SubResource("RectangleShape2D_ipns3")
+frame_progress = 0.755995
 
 [node name="Hurtbox" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(5, 14)
+position = Vector2(-75, -17)
 shape = SubResource("CapsuleShape2D_md0e3")
 
 [connection signal="mouse_shape_entered" from="." to="." method="_on_mouse_shape_entered"]

@@ -1,6 +1,6 @@
 extends Node
 
-var gold = 0
+@export var gold: int = 0
 
 var items = {
 	0: {
@@ -30,3 +30,6 @@ var items = {
 }
 
 var inventory = {}
+
+func _ready() -> void:
+	print("Global initialized. Gold =", gold)

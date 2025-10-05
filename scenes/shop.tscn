@@ -774,6 +774,13 @@ libraries = {
 }
 autoplay = "TransIn"
 
+[node name="GoldLabel" type="Label" parent="."]
+offset_left = 224.0
+offset_top = 511.0
+offset_right = 267.0
+offset_bottom = 534.0
+text = "Gold: "
+
 [connection signal="pressed" from="Panel/Close" to="." method="_on_close_pressed"]
 [connection signal="pressed" from="Panel/Control/Next" to="." method="_on_next_pressed"]
 [connection signal="pressed" from="Panel/Control/Prev" to="." method="_on_prev_pressed"]

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://lnklilp14tl0" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://b0hpoogxa3m6x" path="res://arts/AnimationSheet_Character.png" id="2_qhqgy"]
+[ext_resource type="AudioStream" uid="uid://dv7u5qh57qifa" path="res://arts/walking-on-grass-363353.mp3" id="3_qhqgy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
 atlas = ExtResource("2_qhqgy")
@@ -217,10 +218,7 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g2els"]
 radius = 5.0
-height = 22.0
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qhqgy"]
-radius = 7.0
+height = 26.0
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 script = ExtResource("1_g2els")
@@ -231,16 +229,8 @@ animation = &"dead"
 frame_progress = 0.16632
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 5)
+position = Vector2(0, 2)
 shape = SubResource("CapsuleShape2D_g2els")
 
-[node name="Hurtbox" type="Area2D" parent="."]
-collision_layer = 2
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(-1, 1)
-shape = SubResource("CapsuleShape2D_qhqgy")
-debug_color = Color(0.909089, 0.000111471, 0.734548, 0.42)
-
-[connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]
+[node name="stx_jump" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_qhqgy")

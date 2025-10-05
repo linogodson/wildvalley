@@ -1,69 +1,35 @@
 extends CanvasLayer
 
-@onready var panel = $Panel
-@onready var name_label = $Panel/Control/Name
-@onready var des_label = $Panel/Control/Des
-@onready var buy_button = $Panel/Control/Buy
-@onready var icon = $Panel/Control/AnimatedSprite2D
-
-var curr_item = 0
+@onready var item_container = $ItemContainer
+@onready var gold_label = $GoldLabel
 
 func _ready() -> void:
-	panel.visible = false
-	add_to_group("Shop")
-	update_display()
+	update_gold_display()
+	populate_shop()
 
-func toggle() -> void:
-	panel.visible = !panel.visible
+func update_gold_display() -> void:
+	gold_label.text = "Gold: " + str(Global.gold)
 
-func is_open() -> bool:
-	return panel.visible
+func populate_shop() -> void:
+	item_container.clear()
+	for i in Global.items.keys():
+		var item_data = Global.items[i]
+		var button = Button.new()
+		button.text = "%s - %dG" % [item_data["Name"], item_data["Cost"]]
+		button.connect("pressed", Callable(self, "_on_item_pressed").bind(i))
+		item_container.add_child(button)
 
-func _on_close_pressed() -> void:
-	panel.visible = false
+func _on_item_pressed(item_id: int) -> void:
+	var item_data = Global.items[item_id]
+	if Global.gold >= item_data["Cost"]:
+		Global.gold -= item_data["Cost"]
+		update_gold_display()
 
-func update_display() -> void:
-	if curr_item in Global.items:
-		var item = Global.items[curr_item]
-		name_label.text = item["Name"]
-		des_label.text = "%s\n(Cost: %d)" % [item["Des"], item["Cost"]]
-		buy_button.text = "Purchase (%d coins)" % item["Cost"]
-		if item.has("Icon"):
-			icon.frames = item["Icon"]
-			icon.play()
+		if Global.inventory.has(item_id):
+			Global.inventory[item_id] += 1
 		else:
-			icon.frames = null
-			icon.stop()
+			Global.inventory[item_id] = 1
 
-func _on_next_pressed() -> void:
-	curr_item = (curr_item + 1) % Global.items.size()
-	update_display()
-
-func _on_prev_pressed() -> void:
-	curr_item = (curr_item - 1 + Global.items.size()) % Global.items.size()
-	update_display()
-
-func _on_buy_pressed() -> void:
-	if curr_item in Global.items:
-		var item = Global.items[curr_item]
-		if Global.gold >= item["Cost"]:
-			Global.gold -= item["Cost"]
-			var found = false
-			for key in Global.inventory.keys():
-				if Global.inventory[key]["Name"] == item["Name"]:
-					Global.inventory[key]["Count"] += 1
-					found = true
-					break
-			if not found:
-				var new_id = Global.inventory.size()
-				Global.inventory[new_id] = {
-					"Name": item["Name"],
-					"Des": item["Des"],
-					"Cost": item["Cost"],
-					"Count": 1
-				}
-			var player = get_tree().get_first_node_in_group("Player")
-			if player:
-				player.add_heart()
-		else:
-			print("Not enough coins to buy %s!" % item["Name"])
+		print("Bought", item_data["Name"], "- You now have", Global.inventory[item_id])
+	else:
+		print("Not enough gold for", item_data["Name"])

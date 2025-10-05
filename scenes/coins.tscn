@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://c6yfqq8qp6o0q" path="res://arts/coin.png" id="1_0wmmx"]
 [ext_resource type="Script" uid="uid://crc31fwp72swp" path="res://scripts/coins.gd" id="1_o4aag"]
+[ext_resource type="AudioStream" uid="uid://coxksfff6642l" path="res://arts/retro-coin-4-236671.mp3" id="3_fxnh4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o4aag"]
 atlas = ExtResource("1_0wmmx")
@@ -95,17 +96,15 @@ animations = [{
 "speed": 12.0
 }]
 
-[sub_resource type="GDScript" id="GDScript_o4aag"]
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_owglm"]
 radius = 5.0
 
-[sub_resource type="Gradient" id="Gradient_o4aag"]
+[sub_resource type="Gradient" id="Gradient_fxnh4"]
 offsets = PackedFloat32Array(0, 0.305195, 0.519481)
 colors = PackedColorArray(1, 1, 1, 1, 0.25, 0.25, 0.25, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_fxnh4"]
-gradient = SubResource("Gradient_o4aag")
+gradient = SubResource("Gradient_fxnh4")
 fill = 1
 fill_from = Vector2(0.5, 0.513761)
 
@@ -116,7 +115,6 @@ script = ExtResource("1_o4aag")
 sprite_frames = SubResource("SpriteFrames_qqwss")
 autoplay = "default"
 frame_progress = 0.846054
-script = SubResource("GDScript_o4aag")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_owglm")
@@ -124,5 +122,10 @@ shape = SubResource("CircleShape2D_owglm")
 [node name="PointLight2D" type="PointLight2D" parent="."]
 color = Color(0.937608, 0.912986, 1.54018e-06, 1)
 texture = SubResource("GradientTexture2D_fxnh4")
+
+[node name="coin_hehe" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("3_fxnh4")
+volume_db = -16.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

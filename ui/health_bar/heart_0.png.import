@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3dfyg3dxxdt6"
-path="res://.godot/imported/tileset.png-4a2fe39795d198c1dc597f9f8b03344a.ctex"
+uid="uid://t5m1kdhgd0b5"
+path="res://.godot/imported/heart_0.png-809aefed2da593028f4b7de09d0089a7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://arts/tileset.png"
-dest_files=["res://.godot/imported/tileset.png-4a2fe39795d198c1dc597f9f8b03344a.ctex"]
+source_file="res://ui/health_bar/heart_0.png"
+dest_files=["res://.godot/imported/heart_0.png-809aefed2da593028f4b7de09d0089a7.ctex"]
 
 [params]
 
